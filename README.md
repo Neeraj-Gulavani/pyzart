@@ -23,24 +23,20 @@ Features
 ⸻
 
 How It Works
-	1.	Clone the repo:
-      git clone https://github.com/YourUsername/PYZART.gitcd PYZART
 
+1.	Open your browser and go to the PYZART repo on GitHub.
+2.	Create a new Python file directly on GitHub or in your local editor:
+		# my_first_track.py
+		from pyzart import play_note
+		
+		play_note('C4', duration=0.5)
+		play_note('E4', duration=0.5)
+		play_note('G4', duration=0.5)
 
-  	2.	Add your Python track:
-      # my_first_track.py
-      from pyzart import play_note
-      
-      play_note('C4', duration=0.5)
-      play_note('E4', duration=0.5)
-      play_note('G4', duration=0.5)
-
-    3.	Run the symphony:
-      python main.py
-
-
-  	4.	Boom! Your code just became music. 🎵
-
+3.	Upload your file to the repo (if using local editor) or commit directly on GitHub.
+  		python main.py
+5.	Run your Python track in any environment that supports Python and the PYZART library:
+6.	🎵 Enjoy the music your code just created!
 
 ⸻
 
