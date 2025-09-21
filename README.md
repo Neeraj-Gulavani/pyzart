@@ -1,4 +1,4 @@
-<img width="389" height="602" alt="Screenshot 2025-09-21 at 10 44 55 PM" src="https://github.com/user-attachments/assets/48cf769c-a563-4bf5-8a38-aa6d5dccf48f" />🎵 PYZART – Turn Code into Music! 🐍💥
+🎵 PYZART – Turn Code into Music! 🐍💥
 
 Where Python meets Beethoven… and sometimes chaos.
 
