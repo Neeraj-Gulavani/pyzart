@@ -26,7 +26,7 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180);
   const [tabs, setTabs] = useState([
-    { id: 'main.py', name: 'main.py', content: '# Welcome to Pyzart!\n# Write your code here and watch it transform into music\n\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n\n# Generate a sequence\nfor i in range(10):\n    print(fibonacci(i))' },
+    { id: 'main.py', name: 'main.py', content: '# Welcome to Pyzart!\n# Write your code here and watch it transform into music\n\npiano = Piano()\nguitar = Guitar()\n\n# Test single notes\n#piano.play_note("C4", duration=1.0)\n#guitar.play_note("E3", duration=2.0)\n\n# Test chords\n#piano.play_chord("Cmaj7", duration=1.0, octave=4)\n#guitar.play_chord("Am", duration=1.5, octave=3)\n\nfor i in range(3):\n    piano.play_note("C5",duration=0.4)\npiano.play_note("A#4",duration=0.4)\npiano.play_note("G4",duration=0.4)\npiano.play_note("G4",duration=0.8)\nfor i in range(2):\n    piano.play_note("F4",duration=0.4)\npiano.play_note("D#4",duration=0.4)\npiano.play_note("F",duration=0.4)\npiano.play_note("G4",duration=4)\nfor i in range(1,30):\n    piano.play_note("C4", duration=i/100)\nfor i in range(30,1,-1):\n    piano.play_note("C4",duration=i/100)' },
     { id: 'harmony.js', name: 'harmony.js', content: '// JavaScript harmony generator\nconst notes = ["C", "D", "E", "F", "G", "A", "B"];\n\nfunction generateHarmony(scale) {\n  return scale.map(note => {\n    return notes.includes(note) ? note : "Rest";\n  });\n}\n\nconsole.log(generateHarmony(["C", "E", "G"]));' }
   ]);
 
