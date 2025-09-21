@@ -1,14 +1,12 @@
-from flask import Flask, send_file
+from flask import Flask
+from routes.getcode import get_code_bp
+from routes.postmp3 import upload_bp
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return "Hello, Flask is working!"
-
-@app.route("/stream")
-def stream_audio():
-    return send_file("song.mp3", mimetype="audio/mpeg")
+# register all blueprints
+app.register_blueprint(get_code_bp)
+app.register_blueprint(upload_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
