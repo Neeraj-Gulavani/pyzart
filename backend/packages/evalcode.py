@@ -1,11 +1,14 @@
 import ast
-
+from musiclib import pyzart
 def safe_exec(user_code: str, allowed_objects: dict):
     """
     - user_code: string from textarea
     - allowed_objects: dictionary of allowed objects/functions
     """
-    safe_globals = {"__builtins__": None}  # no dangerous built-ins
+    safe_builtins = {
+    "range": range,  # needed for loops
+}
+    safe_globals = {"__builtins__": safe_builtins}  # no dangerous built-ins
     safe_locals = allowed_objects.copy()   # only allowed objects
 
     # Split input into lines and execute each
