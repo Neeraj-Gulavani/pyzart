@@ -1,17 +1,13 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, send_file, jsonify
 import os
 
-upload_bp = Blueprint("upload", __name__)
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+postmp3_bp = Blueprint("postmp3", __name__)
 
-@upload_bp.route("/upload-mp3", methods=["POST"])
-def upload_mp3():
-    if "file" not in request.files:
-        return jsonify({"error": "No file part"}), 400
-    file = request.files["file"]
-    if file.filename == "" or not file.filename.lower().endswith(".mp3"):
-        return jsonify({"error": "Invalid file"}), 400
-    path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(path)
-    return jsonify({"message": "File uploaded", "path": path})
+@postmp3_bp.route("/stream-mp3", methods=["GET"])
+def stream_mp3():
+    path = os.path.join("..", "rec.wav")
+
+    if not os.path.exists(path):
+        return jsonify({"error": "File not found"}), 404
+
+    return send_file(path, mimetype="audio/mpeg")

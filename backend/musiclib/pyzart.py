@@ -1,17 +1,17 @@
 # pyzart.py
-
 from mingus.core import chords, notes
-from scamp import Session
-
-
+from scamp import *
+playback_settings.recording_file_path = "rec.wav"
 class Instrument:
     """Parent class for all instruments using SCAMP + Mingus."""
 
     _session = Session()
-
+    
     def __init__(self, name: str):
         self.name = name
         self.part = self._session.new_part(name)
+        
+        #self.part.instrument.set_polyphony(128)
 
     def play_note(self, note: str, duration: float = 1.0, volume: float = 0.8):
         """
@@ -63,10 +63,30 @@ if __name__ == "__main__":
     piano = Piano()
     guitar = Guitar()
 
-    # Test single notes
-    piano.play_note("C4", duration=1.5)
-    guitar.play_note("E3", duration=2.0)
-
     # Test chords
-    piano.play_chord("Cmaj7", duration=2.0, octave=4)
-    guitar.play_chord("Am", duration=1.5, octave=3)
+    #piano.play_chord("Cmaj7", duration=1.0, octave=4)
+    for i in range(3):
+        piano.play_note("C5",duration=0.4)
+    piano.play_note("A#4",duration=0.4)
+    piano.play_note("G4",duration=0.4)
+    piano.play_note("G4",duration=0.8)
+    for i in range(2):
+        piano.play_note("F4",duration=0.4)
+    piano.play_note("D#4",duration=0.4)
+    piano.play_note("F",duration=0.4)
+    piano.play_note("G4",duration=4)
+    for i in range(1,30):
+        piano.play_note("C4", duration=i/100)
+    for i in range(30,1,-1):
+        piano.play_note("C4",duration=i/100)
+    
+    chordss= [
+    # Major chords
+    "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
+    
+    # Minor chords
+    "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm"
+]
+    for chord in chordss:
+        piano.play_chord(chord,0.5)
+    
