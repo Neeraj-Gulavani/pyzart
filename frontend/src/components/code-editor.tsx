@@ -8,6 +8,18 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
+  // Sends code to Flask backend
+  async function sendCode() {
+    const response = await fetch("http://127.0.0.1:5000/send-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ code: value })
+    });
+    const data = await response.json();
+    console.log(data);
+  }
   const getLanguageClass = () => {
     switch (language) {
       case 'python':
@@ -53,11 +65,13 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
           />
           
           {/* Syntax highlighting overlay would go here in a real implementation */}
-          <div className="absolute top-4 right-4">
-            <div className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-              {language.toUpperCase()}
-            </div>
-          </div>
+          <button
+            onClick={sendCode}
+            className="absolute bottom-4 right-4 px-3 py-1 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
+            type="button"
+          >
+            Run
+          </button>
         </div>
       </div>
 
