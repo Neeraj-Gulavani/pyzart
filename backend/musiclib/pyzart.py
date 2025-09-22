@@ -59,6 +59,22 @@ class Guitar(Instrument):
         session = Session()
         super().__init__(session,"acoustic guitar")
 
+class Violin(Instrument):
+    def __init__(self):
+        session = Session()
+        super().__init__(session,"violin")
+
+class Cello(Instrument):
+    def __init__(self):
+        session = Session()
+        super().__init__(session,"cello")
+
+class Flute(Instrument):
+    def __init__(self):
+        session = Session()
+        super().__init__(session,"flute")
+
+
 
 # ---------------- TEST CODE ---------------- #
 if __name__ == "__main__":

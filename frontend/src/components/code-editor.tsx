@@ -21,6 +21,9 @@ export function CodeEditor({ value, onChange, language, onMusicGenerated }: Code
     });
     const data = await response.json();
     console.log(data);
+    if (data.code==400) {
+      
+    }
     if (data.message == "Code received!" && onMusicGenerated) {
       console.log("received..");
       onMusicGenerated();

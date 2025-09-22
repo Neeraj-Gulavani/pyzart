@@ -38,47 +38,14 @@ export function Dashboard({ onNavigate }: DashboardProps) {
   const [projects, setProjects] = useState<Project[]>([
     {
       id: 1,
-      title: 'Fibonacci Symphony',
-      description: 'A mathematical music piece generated from recursive fibonacci sequences',
+      title: 'Demo',
+      description: 'A simple demo explaining the project',
       lastModified: '2 hours ago',
       collaborators: [],
-      tags: ['Python', 'Mathematical', 'Ambient'],
+      tags: ['Python', 'Ambient'],
       isStarred: true,
       playCount: 247,
       duration: '3:24'
-    },
-    {
-      id: 2,
-      title: 'Sorting Algorithms Beat',
-      description: 'Electronic beats generated from various sorting algorithm patterns',
-      lastModified: '1 day ago',
-      collaborators: [],
-      tags: ['JavaScript', 'Electronic', 'Rhythmic'],
-      isStarred: false,
-      playCount: 89,
-      duration: '4:12'
-    },
-    {
-      id: 3,
-      title: 'Neural Network Harmonies',
-      description: 'Deep learning model outputs transformed into harmonic progressions',
-      lastModified: '3 days ago',
-      collaborators: [],
-      tags: ['Python', 'AI', 'Experimental'],
-      isStarred: true,
-      playCount: 156,
-      duration: '5:45'
-    },
-    {
-      id: 4,
-      title: 'Binary Tree Melodies',
-      description: 'Tree traversal algorithms creating melodic patterns',
-      lastModified: '1 week ago',
-      collaborators: [],
-      tags: ['C++', 'Classical', 'Structured'],
-      isStarred: false,
-      playCount: 34,
-      duration: '2:58'
     }
   ]);
 
