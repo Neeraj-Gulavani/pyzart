@@ -2,14 +2,14 @@
 from mingus.core import chords, notes
 from scamp import *
 playback_settings.recording_file_path = "rec.wav"
+import threading
 class Instrument:
     """Parent class for all instruments using SCAMP + Mingus."""
-
-    _session = Session()
     
-    def __init__(self, name: str):
+    def __init__(self, session, name: str):
         self.name = name
-        self.part = self._session.new_part(name)
+        self.session = session
+        self.part = self.session.new_part(name)
         
         #self.part.instrument.set_polyphony(128)
 
@@ -50,12 +50,14 @@ class Instrument:
 # Derived classes
 class Piano(Instrument):
     def __init__(self):
-        super().__init__("piano")
+        session = Session()
+        super().__init__(session,"piano")
 
 
 class Guitar(Instrument):
     def __init__(self):
-        super().__init__("acoustic guitar")
+        session = Session()
+        super().__init__(session,"acoustic guitar")
 
 
 # ---------------- TEST CODE ---------------- #

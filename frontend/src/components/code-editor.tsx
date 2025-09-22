@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import MonacoEditor from '@monaco-editor/react';
 
 interface CodeEditorProps {
   value: string;
@@ -57,19 +58,30 @@ export function CodeEditor({ value, onChange, language, onMusicGenerated }: Code
         
         {/* Code Area */}
         <div className="flex-1 relative">
-          <textarea
+          <MonacoEditor
+            height="calc(100vh - 180px)" // fills most of the screen, adjust as needed
+            width="100%"
+            language={language}
             value={value}
-            onChange={(e) => onChange(e.target.value)}
-            className={`w-full h-full p-4 bg-transparent border-none outline-none resize-none font-mono text-sm leading-6 ${getLanguageClass()}`}
-            placeholder="Write your code here..."
-            spellCheck={false}
-            style={{ 
-              lineHeight: '1.5rem',
-              tabSize: 2
+            theme="vs-dark"
+            options={{
+              fontSize: 14,
+              fontFamily: 'Fira Mono, Menlo, Monaco, "Courier New", monospace',
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+              lineNumbers: 'off', // We show our own line numbers
+              padding: { top: 16, bottom: 16 },
+              scrollbar: {
+                vertical: 'visible',
+                horizontal: 'auto',
+                useShadows: false,
+                verticalScrollbarSize: 12,
+                horizontalScrollbarSize: 12,
+              },
             }}
+            onChange={(val) => onChange(val ?? '')}
           />
-          
-          {/* Syntax highlighting overlay would go here in a real implementation */}
           <button
             onClick={sendCode}
             className="absolute bottom-4 right-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold shadow hover:bg-primary/90 active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary"
