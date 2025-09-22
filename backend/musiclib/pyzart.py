@@ -22,7 +22,7 @@ class Instrument:
             pitch = ''.join([c for c in note if c.isalpha() or c in ['#', 'b']])
             octave_str = ''.join([c for c in note if c.isdigit()])
             octave = int(octave_str) if octave_str else 4  # default = octave 4
-
+            
             base_midi = notes.note_to_int(pitch)  # "C" -> 0
             midi_note = base_midi + (12 * (octave + 1))  # "C4" = 60
 

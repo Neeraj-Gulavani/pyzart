@@ -43,16 +43,18 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const togglePlayback = () => {
-    setIsPlaying(!isPlaying);
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-    }
-  };
+ const togglePlayback = () => {
+  if (!audioRef.current) return;
+
+  if (isPlaying) {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  } else {
+    audioRef.current.play();
+    setIsPlaying(true);
+  }
+};
+
 
   const stopPlayback = () => {
     setIsPlaying(false);
@@ -90,9 +92,17 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
   };
 
   const handleMusicGenerated = () => {
-    console.log("Set the audio url");
-    setAudioUrl("http://127.0.0.1:5000/stream-mp3/");
-  };
+  const newUrl = `http://127.0.0.1:5000/stream-mp3?ts=${Date.now()}`;
+  setAudioUrl(newUrl);
+
+  if (audioRef.current) {
+    audioRef.current.src = newUrl;   // update source
+    audioRef.current.load();         // reload
+    audioRef.current.play();         // auto-play new audio
+    setIsPlaying(true);
+  }
+};
+
 
   return (
     <div className="h-screen flex flex-col bg-background">
@@ -133,10 +143,12 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
           </Button>
         </div>
       </motion.header>
-      <audio ref={audioRef} style={{ display: "none" }}>
-        <source src="http://127.0.0.1:5000/stream-mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
+      <audio
+  ref={audioRef}
+  style={{ display: "none" }}
+  controls={false}
+/>
+
 
       <div className="flex-1 flex overflow-hidden">
         {/* Code Editor Section */}
