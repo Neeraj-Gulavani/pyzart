@@ -25,12 +25,14 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
   const [volume, setVolume] = useState([75]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180);
+  const TITLE: string = "# demo_song.py\n# Demo song for Pyzart\n# --------------------\n# This is a sequential piano demo.\n# It uses loops and simple chord progressions.\n# Each note or chord is played one after another (no polyphony).\n# Loops are used to repeat patterns efficiently.\n# Chords are written as \"C\", \"F\", \"G\" instead of \"Cmaj\", etc.\n\npiano = Piano()\n\n# --- Intro: simple arpeggio ---\nfor i in range(3):\n    piano.play_note(\"C\", duration=0.5)\n    piano.play_note(\"E\", duration=0.5)\n    piano.play_note(\"G\", duration=0.5)\n    piano.play_note(\"C\", duration=1.0)\n\n# --- Main chord progression ---\nchords = [\"C\", \"F\", \"G\", \"C\"]\nfor chord in chords:\n    piano.play_chord(chord, duration=1.0)\n\n# --- Repeated motif ---\nfor i in range(2):\n    piano.play_note(\"E\", duration=0.5)\n    piano.play_note(\"F\", duration=0.5)\n    piano.play_note(\"G\", duration=1.0)\n\n# --- Crescendo/Decrescendo effect ---\n# Gradually speed up then slow down the note \"C\"\nfor i in range(1, 30):\n    piano.play_note(\"C\", duration=i/100)\nfor i in range(30, 1, -1):\n    piano.play_note(\"C\", duration=i/100)\n\n# --- Closing chord ---\npiano.play_chord(\"C\", duration=2.0)\n\n# Notes on working:\n# 1. Each piano object calls SCAMP's play_note/play_chord under the hood.\n# 2. Sequential calls mean notes/chords play one after another, no overlaps.\n# 3. Loops reduce repetition and make patterns compact.\n# 4. Duration controls how long each note/chord plays.\n# 5. Changing duration in a loop can create interesting dynamics like crescendos. ";
   const [tabs, setTabs] = useState([
-    { id: 'main.py', name: 'main.py', content: '# ----------------------------------------------------------\n# Pyzart Demo 🎵🐍\n# Learn Python basics with music as feedback.\n# ----------------------------------------------------------\n\n# Create objects (instruments). Variables store these objects.\npiano = Piano()\nguitar = Guitar()\n\n# Function call: play_note(note, duration)\n#   - note: string → which note to play, e.g. "F4"\n#   - duration: number → how long to play (in seconds)\n# If you skip duration, a default value is used.\n\n# Example:\npiano.play_note("F4", 0.4)   # plays note F4 for 0.4 seconds\n\n# Repeat the same action using a loop\nfor i in range(3):                 \n    piano.play_note("C5", 0.4)     # C5 played three times quickly\n\n# Sequential function calls\npiano.play_note("A#4", 0.4)        # first note\npiano.play_note("G4", 0.8)         # then G4, held longer\n\n# Another loop with 2 repeats\nfor i in range(2):\n    piano.play_note("F4", 0.4)     # note + duration each time\n\n# Using variables in loops\nfor i in range(1, 30):             # i goes 1 → 29\n    piano.play_note("C4", i/100)   # duration grows with i\n\nfor i in range(30, 1, -1):         # i goes 30 → 2\n    piano.play_note("C4", i/100)   # duration shrinks with i\n\n# ----------------------------------------------------------\n# Python concepts used:\n# - Variables (piano, guitar)\n# - Functions with parameters (note, duration)\n# - Loops with range()\n# - Strings ("F4") and numbers (0.4) as inputs\n# ----------------------------------------------------------' },
+    { id: 'main.py', name: 'main.py', content: TITLE },
     
   ]);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [terminalOutput, setTerminalOutput] = useState<string>('Welcome to Pyzart Terminal!\n');
+  const [terminalOutput, setTerminalOutput] = useState<string>('Welcome to Pyzart!\n');
+  const [terminalColor, setTerminalColor] = useState<string>('text-green-400');
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -211,6 +213,8 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
               }}
               language={activeTab.endsWith('.py') ? 'python' : 'javascript'}
               onMusicGenerated={handleMusicGenerated}
+              setTerminalOutput={setTerminalOutput}
+              setTerminalColor={setTerminalColor}
             />
           </div>
         </motion.div>
@@ -294,7 +298,7 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
             </CardHeader>
             <CardContent className="h-64">
               <div
-                className="h-full w-full bg-black text-green-400 font-mono text-xs rounded p-3 overflow-auto"
+                className={`h-full w-full bg-black font-mono text-xs rounded p-3 overflow-auto ${terminalColor}`}
                 style={{ minHeight: '16rem', maxHeight: '16rem', whiteSpace: 'pre-wrap' }}
               >
                 {terminalOutput}

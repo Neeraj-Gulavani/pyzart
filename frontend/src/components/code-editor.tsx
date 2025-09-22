@@ -6,10 +6,12 @@ interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language: 'python' | 'javascript';
-  onMusicGenerated?: () => void; // new prop
+  onMusicGenerated?: () => void;
+  setTerminalOutput?: (output: string) => void; // add this prop
+  setTerminalColor?: (color: string) => void; // add this prop
 }
 
-export function CodeEditor({ value, onChange, language, onMusicGenerated }: CodeEditorProps) {
+export function CodeEditor({ value, onChange, language, onMusicGenerated, setTerminalOutput, setTerminalColor }: CodeEditorProps) {
   // Sends code to Flask backend
   async function sendCode() {
     const response = await fetch("http://127.0.0.1:5000/send-code", {
@@ -21,12 +23,18 @@ export function CodeEditor({ value, onChange, language, onMusicGenerated }: Code
     });
     const data = await response.json();
     console.log(data);
-    if (data.code==400) {
-      
+    if (!response.ok && setTerminalOutput) {
+      setTerminalOutput(data.error);
+      if (setTerminalColor) setTerminalColor('text-red-400');
     }
     if (data.message == "Code received!" && onMusicGenerated) {
       console.log("received..");
+      
+      if (setTerminalColor) setTerminalColor('text-green-400');
       onMusicGenerated();
+      if (setTerminalOutput) {
+        setTerminalOutput("Code Executed!");
+      }
     }
   }
   const getLanguageClass = () => {

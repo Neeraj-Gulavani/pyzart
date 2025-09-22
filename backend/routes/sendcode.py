@@ -24,7 +24,7 @@ def send_code():
 
     try:
         # create separate globals/locals so user code can't touch your Flask internals
-        safe_globals = {"__builtins__": {}}   # no dangerous builtins
+        safe_globals = {"__builtins__": {"range": range}}   # no dangerous builtins
         safe_locals = allowed_objects.copy()
         session = Session()
         exec(code, safe_globals, safe_locals)
