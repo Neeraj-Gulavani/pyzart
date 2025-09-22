@@ -5,9 +5,10 @@ interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language: 'python' | 'javascript';
+  onMusicGenerated?: () => void; // new prop
 }
 
-export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
+export function CodeEditor({ value, onChange, language, onMusicGenerated }: CodeEditorProps) {
   // Sends code to Flask backend
   async function sendCode() {
     const response = await fetch("http://127.0.0.1:5000/send-code", {
@@ -19,6 +20,10 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
     });
     const data = await response.json();
     console.log(data);
+    if (data.message == "Code received!" && onMusicGenerated) {
+      console.log("received..");
+      onMusicGenerated();
+    }
   }
   const getLanguageClass = () => {
     switch (language) {
@@ -67,7 +72,7 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
           {/* Syntax highlighting overlay would go here in a real implementation */}
           <button
             onClick={sendCode}
-            className="absolute bottom-4 right-4 px-3 py-1 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
+            className="absolute bottom-4 right-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold shadow hover:bg-primary/90 active:scale-95 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary"
             type="button"
           >
             Run

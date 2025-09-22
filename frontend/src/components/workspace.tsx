@@ -29,8 +29,7 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
     { id: 'main.py', name: 'main.py', content: '# Welcome to Pyzart!\n# Write your code here and watch it transform into music\n\npiano = Piano()\nguitar = Guitar()\n\n# Test single notes\n#piano.play_note("C4", duration=1.0)\n#guitar.play_note("E3", duration=2.0)\n\n# Test chords\n#piano.play_chord("Cmaj7", duration=1.0, octave=4)\n#guitar.play_chord("Am", duration=1.5, octave=3)\n\nfor i in range(3):\n    piano.play_note("C5",duration=0.4)\npiano.play_note("A#4",duration=0.4)\npiano.play_note("G4",duration=0.4)\npiano.play_note("G4",duration=0.8)\nfor i in range(2):\n    piano.play_note("F4",duration=0.4)\npiano.play_note("D#4",duration=0.4)\npiano.play_note("F",duration=0.4)\npiano.play_note("G4",duration=4)\nfor i in range(1,30):\n    piano.play_note("C4", duration=i/100)\nfor i in range(30,1,-1):\n    piano.play_note("C4",duration=i/100)' },
     { id: 'harmony.js', name: 'harmony.js', content: '// JavaScript harmony generator\nconst notes = ["C", "D", "E", "F", "G", "A", "B"];\n\nfunction generateHarmony(scale) {\n  return scale.map(note => {\n    return notes.includes(note) ? note : "Rest";\n  });\n}\n\nconsole.log(generateHarmony(["C", "E", "G"]));' }
   ]);
-
-
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -90,6 +89,11 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleMusicGenerated = () => {
+    console.log("Set the audio url");
+    setAudioUrl("http://127.0.0.1:5000/stream-mp3/");
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Top Navigation */}
@@ -129,6 +133,10 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
           </Button>
         </div>
       </motion.header>
+      <audio ref={audioRef} style={{ display: "none" }}>
+        <source src="http://127.0.0.1:5000/stream-mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
 
       <div className="flex-1 flex overflow-hidden">
         {/* Code Editor Section */}
@@ -189,6 +197,7 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
                 ));
               }}
               language={activeTab.endsWith('.py') ? 'python' : 'javascript'}
+              onMusicGenerated={handleMusicGenerated}
             />
           </div>
         </motion.div>
@@ -276,9 +285,13 @@ export function Workspace({ onNavigate }: WorkspaceProps) {
           </Card>
 
           {/* Hidden audio element for demo */}
-          <audio ref={audioRef} loop>
-            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmAaBC2O0/PT" type="audio/wav" />
-          </audio>
+      {/*    <audio 
+  ref={audioRef} 
+  loop 
+  src={audioUrl || "http://127.0.0.1:5000/stream-mp3"} 
+  style={{ display: "none" }}
+/>
+*/}
         </motion.div>
 
         {/* Settings & Export Panel */}

@@ -10,4 +10,4 @@ def stream_mp3():
     if not os.path.exists(path):
         return jsonify({"error": "File not found"}), 404
 
-    return send_file(path, mimetype="audio/mpeg")
+    return send_file(path, mimetype="audio/wav")
