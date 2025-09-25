@@ -1,8 +1,8 @@
 # pyzart.py
-from mingus.core import chords, notes
+from mingus.core import chords, notes,scales
 from scamp import *
+from .instrumentkeywords import instrument_keywords
 playback_settings.recording_file_path = "rec.wav"
-import threading
 class Instrument:
     """Parent class for all instruments using SCAMP + Mingus."""
     
@@ -26,7 +26,7 @@ class Instrument:
             base_midi = notes.note_to_int(pitch)  # "C" -> 0
             midi_note = base_midi + (12 * (octave + 1))  # "C4" = 60
 
-            self.part.play_note(midi_note, volume, duration)
+            n =self.part.play_note(midi_note, volume, duration)
             print(f"{self.name} played note {note} (MIDI {midi_note}) for {duration} beats")
         except Exception as e:
             raise RuntimeError(f"Error playing note {note}: {e}")
@@ -45,66 +45,78 @@ class Instrument:
             print(f"{self.name} played chord {chord_name} (MIDI {midi_notes}) for {duration} beats")
         except Exception as e:
             raise RuntimeError(f"Error playing chord {chord_name}: {e}")
+    
+    def play_notes(self, notes_list, octaves_list, duration=1.0, volume=0.8):
+        try:
+            if not notes_list or not isinstance(notes_list, list):
+                raise ValueError(f"Notes list must be a non-empty list: {notes_list}")
+
+            midi_notes = []
+            for note, note_octave in zip(notes_list, octaves_list):
+                pitch = ''.join([c for c in note if c.isalpha() or c in ['#', 'b']])
+                octave_str = ''.join([c for c in note if c.isdigit()])
+
+                # Use octave from note string if present, else from octaves_list, else default 4
+                if octave_str:
+                    effective_octave = int(octave_str)
+                elif note_octave is not None:
+                    effective_octave = note_octave
+                else:
+                    effective_octave = 4  # a general fallback/default
+
+                base_midi = notes.note_to_int(pitch)
+                midi_note = base_midi + (12 * (effective_octave + 1))
+                midi_notes.append(midi_note)
+
+            self.part.play_chord(midi_notes, volume, duration)
+            print(f"{self.name} played notes {notes_list} (MIDI {midi_notes}) for {duration} beats")
+        except Exception as e:
+            raise RuntimeError(f"Error playing notes {notes_list}: {e}")
 
 
-# Derived classes
-class Piano(Instrument):
-    def __init__(self):
-        session = Session()
-        super().__init__(session,"piano")
+
+    def play_together(self, notes_list, duration=1, octave=4):
+        keys = []
+        octaves = []
+        for item in notes_list:
+            if isinstance(item, Chord):
+                keys.extend(item.Notes)  # add all notes in the chord
+                octaves.extend([item.octave] * len(item.Notes))
+            else:
+                keys.append(item)
+                octaves.append(None)
+        self.play_notes(keys, octaves,duration=duration)
+
+    def traverse(self,starting_note,ending_note,steps=1.0):
+        midi1=getnotemidi(starting_note)
+        midi2=getnotemidi(ending_note)
+        i=midi1
+        while(i<midi2):
+            j=i
+            i=i+steps
+            self.part.play_note(j+steps,1,0.09)
 
 
-class Guitar(Instrument):
-    def __init__(self):
-        session = Session()
-        super().__init__(session,"acoustic guitar")
 
-class Violin(Instrument):
-    def __init__(self):
-        session = Session()
-        super().__init__(session,"violin")
+def getnotemidi(note):
+    pitch = ''.join([c for c in note if c.isalpha() or c in ['#', 'b']])
+    octave_str = ''.join([c for c in note if c.isdigit()])
+    octave = int(octave_str) if octave_str else 4  # default = octave 4
+    
+    base_midi = notes.note_to_int(pitch)  # "C" -> 0
+    midi_note = base_midi + (12 * (octave + 1))
+    return midi_note
 
-class Cello(Instrument):
-    def __init__(self):
-        session = Session()
-        super().__init__(session,"cello")
+class Chord():
+    def __init__(self,chord_str,octave=4):
+        self.Notes=chords.from_shorthand(chord_str)
+        self.octave = octave
 
-class Flute(Instrument):
-    def __init__(self):
-        session = Session()
-        super().__init__(session,"flute")
-
+class MajorScale():
+    def __init__(self,note):
+        self.Notes=scales.Major(note).ascending()
 
 
 # ---------------- TEST CODE ---------------- #
 if __name__ == "__main__":
-    piano = Piano()
-    guitar = Guitar()
-
-    # Test chords
-    #piano.play_chord("Cmaj7", duration=1.0, octave=4)
-    for i in range(3):
-        piano.play_note("C5",duration=0.4)
-    piano.play_note("A#4",duration=0.4)
-    piano.play_note("G4",duration=0.4)
-    piano.play_note("G4",duration=0.8)
-    for i in range(2):
-        piano.play_note("F4",duration=0.4)
-    piano.play_note("D#4",duration=0.4)
-    piano.play_note("F",duration=0.4)
-    piano.play_note("G4",duration=4)
-    for i in range(1,30):
-        piano.play_note("C4", duration=i/100)
-    for i in range(30,1,-1):
-        piano.play_note("C4",duration=i/100)
-    
-    chordss= [
-    # Major chords
-    "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
-    
-    # Minor chords
-    "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm"
-]
-    for chord in chordss:
-        piano.play_chord(chord,0.5)
-    
+    pass

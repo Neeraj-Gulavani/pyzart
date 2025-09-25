@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LandingPage } from './components/landing-page';
 import { Workspace } from './components/workspace';
@@ -11,8 +11,12 @@ type Page = 'landing' | 'workspace' | 'dashboard';
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('landing');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
