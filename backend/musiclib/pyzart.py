@@ -3,9 +3,9 @@ from mingus.core import chords, notes,scales
 from scamp import *
 from .instrumentkeywords import instrument_keywords
 playback_settings.recording_file_path = "rec.wav"
+
 class Instrument:
     """Parent class for all instruments using SCAMP + Mingus."""
-    
     def __init__(self, session, name: str):
         self.name = name
         self.session = session

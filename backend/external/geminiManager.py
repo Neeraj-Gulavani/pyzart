@@ -6,7 +6,7 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 def askGemini(query):
-    with open("system_instructions.txt", "r") as f:
+    with open("external/system_instructions.txt", "r") as f:
         required_instructions = f.read()
     response = client.models.generate_content(
         model = "gemini-2.5-pro",

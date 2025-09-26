@@ -10,7 +10,6 @@ import itertools
 #instruments = ["Piano", "Guitar", "Flute", "Violin", "Cello","Timpani"]
 
 allowed_objects = {
-    "Session": Session,
     "Chord" : Chord,
     "MajorScale": MajorScale,
 }
@@ -72,10 +71,11 @@ def send_code():
         
         #safe_locals = allowed_objects.copy()
         safe_globals.update(allowed_objects)
-        code = "session = Session()\n" + code
+        code_as_string = "def setBar():\n    return session.beat()\n\ndef isBar(bar, num):\n    return (session.beat() >= (num-1) * bar) and (session.beat() < (num) * bar)\n"
+        code = "session = Session()\n"+ code_as_string+code
         for cls_name, scamp_keyword in instrument_keywords.items():
             code = code.replace(f"{cls_name}()", f"{cls_name}(session, '{scamp_keyword}')")
-        print(code)
+        code = code + "\nsession.wait_for_children_to_finish()"
         exec(code, safe_globals, safe_globals)
 
         return jsonify({"message": "Code received!", "code": code})

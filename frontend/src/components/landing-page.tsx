@@ -243,9 +243,9 @@ export function LandingPage({ onNavigate, onAuth, isAuthenticated }: LandingPage
                   
                   <div className="space-y-6">
                     <ImageWithFallback
-                      src="https://images.unsplash.com/photo-1603516875773-9a4c1861d5ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtdXNpYyUyMGNvZGUlMjB2aXN1YWxpemF0aW9ufGVufDF8fHx8MTc1ODQ2ODIwOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                      src="https://i.ibb.co/YBPgR4gK/Chat-GPT-Image-Sep-25-2025-09-49-56-PM.png"
                       alt="Music Visualization"
-                      className="w-full h-48 object-cover rounded-lg"
+                      className="w-full h-80 object-cover rounded-lg"
                     />
                     
                     <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
